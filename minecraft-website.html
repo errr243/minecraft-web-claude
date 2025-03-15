@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft - Official Clone for Testing</title>
+    <style>
+        :root {
+            --minecraft-green: #44bd32;
+            --minecraft-dark: #2c3e50;
+            --minecraft-accent: #e67e22;
+            --minecraft-light: #f5f6fa;
+            --minecraft-dirt: #7f6000;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: var(--minecraft-dark);
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0.5rem 2rem;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 40px;
+            margin-right: 1rem;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            position: relative;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 1rem 1.5rem;
+            display: block;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: var(--minecraft-green);
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 4px;
+        }
+        
+        .dropdown-content a {
+            color: var(--minecraft-dark) !important;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-weight: normal;
+        }
+        
+        .dropdown-content a:hover {
+            background-color: #f9f9f9;
+            color: var(--minecraft-green) !important;
+        }
+        
+        nav ul li:hover .dropdown-content {
+            display: block;
+        }
+        
+        .header-buttons {
+            display: flex;
+        }
+        
+        .btn {
+            padding: 0.5rem 1.5rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-left: 1rem;
+            cursor: pointer;
+        }
+        
+        .btn-primary {
+            background-color: var(--minecraft-green);
+            color: white;
+            border: 2px solid var(--minecraft-green);
+        }
+        
+        .btn-primary:hover {
+            background-color: #3aa328;
+            border-color: #3aa328;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+        
+        .btn-outline:hover {
+            background-color: white;
+            color: var(--minecraft-dark);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Hero Section */
+        .hero {
+            height: 80vh;
+            background-image: url('/api/placeholder/1920/1080');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            color: white;
+            position: relative;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            max-width: 800px;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .hero-btn {
+            padding: 1rem 2.5rem;
+            border-radius: 4px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .hero-btn-primary {
+            background-color: var(--minecraft-green);
+            color: white;
+        }
+        
+        .hero-btn-primary:hover {
+            background-color: #3aa328;
+        }
+        
+        .hero-btn-secondary {
+            background-color: white;
+            color: var(--minecraft-dark);
+        }
+        
+        .hero-btn-secondary:hover {
+            background-color: #f5f5f5;
+        }
+        
+        /* Game Editions Section */
+        .editions {
+            padding: 5rem 2rem;
+            background-color: var(--minecraft-light);
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-header h2 {
+            font-size: 2.5rem;
+            color: var(--minecraft-dark);
+            margin-bottom: 1rem;
+        }
+        
+        .section-header p {
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .edition-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .edition-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .edition-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .edition-image {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .edition-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .edition-card:hover .edition-image img {
+            transform: scale(1.1);
+        }
+        
+        .edition-details {
+            padding: 1.5rem;
+        }
+        
+        .edition-details h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: var(--minecraft-dark);
+        }
+        
+        .edition-details p {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+        
+        .edition-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--minecraft-green);
+            margin-bottom: 1.5rem;
+        }
+        
+        .edition-btn {
+            display: inline-block;
+            padding: 0.75rem 2rem;
+            background-color: var(--minecraft-green);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        
+        .edition-btn:hover {
+            background-color: #3aa328;
+        }
+        
+        /* Features Section */
+        .features {
+            padding: 5rem 2rem;
+            background-color: var(--minecraft-dark);
+            color: white;
+        }
+        
+        .features .section-header h2 {
+            color: white;
+        }
+        
+        .features .section-header p {
+            color: #ddd;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .feature-item {
+            text-align: center;
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: var(--minecraft-green);
+        }
+        
+        .feature-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-item p {
+            color: #bbb;
+        }
+        
+        /* Community Section */
+        .community {
+            padding: 5rem 2rem;
+            background-color: white;
+        }
+        
+        .community-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: center;
+        }
+        
+        .community-text {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .community-text h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--minecraft-dark);
+        }
+        
+        .community-text p {
+            color: #666;
+            margin-bottom: 2rem;
+        }
+        
+        .community-image {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .community-image img {
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        /* News Section */
+        .news {
+            padding: 5rem 2rem;
+            background-color: #f9f9f9;
+        }
+        
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .news-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .news-image {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .news-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .news-content {
+            padding: 1.5rem;
+        }
+        
+        .news-date {
+            display: inline-block;
+            background-color: var(--minecraft-green);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+        
+        .news-content h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--minecraft-dark);
+        }
+        
+        .news-content p {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+        
+        .read-more {
+            color: var(--minecraft-green);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .read-more:hover {
+            text-decoration: underline;
+        }
+        
+        .read-more span {
+            margin-left: 0.5rem;
+        }
+        
+        /* CTA Section */
+        .cta {
+            padding: 5rem 2rem;
+            background-color: var(--minecraft-green);
+            color: white;
+            text-align: center;
+        }
+        
+        .cta-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .cta p {
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+        
+        .cta-btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background-color: white;
+            color: var(--minecraft-green);
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+        }
+        
+        .cta-btn:hover {
+            background-color: var(--minecraft-dark);
+            color: white;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--minecraft-dark);
+            color: white;
+            padding: 4rem 2rem 2rem;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .footer-top {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--minecraft-green);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-links a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--minecraft-green);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .social-icon {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background-color: #fff;
+            border-radius: 50%;
+            color: var(--minecraft-dark);
+            text-align: center;
+            line-height: 40px;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+        
+        .social-icon:hover {
+            background-color: var(--minecraft-green);
+            color: white;
+        }
+        
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.9rem;
+            color: #bbb;
+        }
+        
+        .footer-bottom-links a {
+            color: #bbb;
+            text-decoration: none;
+            margin-left: 1.5rem;
+            transition: color 0.3s;
+        }
+        
+        .footer-bottom-links a:hover {
+            color: var(--minecraft-green);
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 992px) {
+            .header-container {
+                padding: 0.5rem 1rem;
+            }
+            
+            nav ul {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .header-buttons {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .community-content {
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero {
+                height: auto;
+                padding: 5rem 0;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .feature-item {
+                padding: 0 1rem;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            
+            .footer-bottom-links {
+                margin-top: 1rem;
+            }
+            
+            .footer-bottom-links a {
+                margin: 0 0.75rem;
+            }
+        }
+
+        /* Minecraft Dirt Block Background */
+        .dirt-bg {
+            background-color: var(--minecraft-dirt);
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23997a00' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M0 38.59l2.83-2.83 1.41 1.41L1.41 40H0v-1.41zM0 20.83l2.83-2.83 1.41 1.41L1.41 22H0v-1.17zM6.41 28.41l2.83-2.83 1.41 1.41L7.83 30H6.41v-1.59zM22.41 6.41l2.83-2.83 1.41 1.41L23.83 8H22.41V6.41zM32.41 36.41l2.83-2.83 1.41 1.41L33.83 38H32.41v-1.59zM32.41 18.41l2.83-2.83 1.41 1.41L33.83 20H32.41v-1.59zM12.41 12.41l2.83-2.83 1.41 1.41L13.83 14H12.41v-1.59zM24.41 30.41l2.83-2.83 1.41 1.41L25.83 32H24.41v-1.59z'/%3E%3C/g%3E%3C/svg%3E");
+            padding: 5rem 2rem;
+            position: relative;
+        }
+        
+        .dirt-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.2);
+        }
+        
+        .minecraft-container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+            color: white;
+        }
+        
+        .minecraft-logo {
+            max-width: 400px;
+            margin-bottom: 2rem;
+        }
+        
+        .minecraft-text {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+        
+        .minecraft-btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background-color: #55aa00;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 4px;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            border: 2px solid #55aa00;
+        }
+        
+        .minecraft-btn:hover {
+            background-color: transparent;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="/api/placeholder/100/40" alt="Minecraft Logo">
+            </div>
+            
+            <button class="mobile-menu-btn">☰</button>
+            
+            <nav>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li>
+                        <a href="#">Games</a>
+                        <div class="dropdown-content">
+                            <a href="#">Minecraft</a>
+                            <a href="#">Minecraft Dungeons</a>
+                            <a href="#">Minecraft Legends</a>
+                            <a href="#">Minecraft Education</a>
+                        </div>
+                    </li>
+                    <li><a href="#">Community</a></li>
+                    <li><a href="#">Merch</a></li>
+                    <li><a href="#">Support</a></li>
+                </ul>
+            </nav>
+            
+            <div class="header-buttons">
+                <a href="#" class="btn btn-outline">Login</a>
+                <a href="#" class="btn btn-primary">Get Minecraft</a>
+            </div>
+        </div>
+    </header>
+    
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Create, Explore, and Survive in the World of Minecraft</h1>
+            <p>Unleash your creativity and build amazing structures, battle mobs, and embark on epic adventures in the infinite worlds of Minecraft.</p>
+            <div class="hero-buttons">
+                <a href="#" class="hero-btn hero-btn-primary">Get Minecraft Now</a>
+                <a href="#" class="hero-btn hero-btn-secondary">Watch Trailer</a>
+            </div>
+        </div>
+    </section>
+    
+    <section class="editions">
+        <div class="section-header">
+            <h2>Choose Your Edition</h2>
+            <p>Minecraft is available on multiple platforms. Select the edition that's right for you!</p>
+        </div>
+        
+        <div class="edition-cards">
+            <div class="edition-card">
+                <div class="edition-image">
+                    <img src="/api/placeholder/400/300" alt="Java Edition">
+                </div>
+                <div class="edition-details">
+                    <h3>Java Edition</h3>
+                    <p>The original version of Minecraft for Windows, macOS, and Linux with custom mods, servers, and skins.</p>
+                    <div class="edition-price">$26.95</div>
+                    <a href="#" class="edition-btn">Buy Now</a>
+                </div>
+            </div>
+            
+            <div class="edition-card">
+                <div class="edition-image">
+                    <img src="/api/placeholder/400/300" alt="Bedrock Edition">
+                </div>
+                <div class="edition-details">
+                    <h3>Bedrock Edition</h3>
+                    <p>Play on console, mobile devices, and Windows 10 with cross-platform multiplayer support.</p>
+                    <div class="edition-price">$19.99</div>
+                    <a href="#" class="edition-btn">Buy Now</a>
+                </div>
+            </div>
+            
+            <div class="edition-card">
+                <div class="edition-image">
+                    <img src="/api/placeholder/400/300" alt="Education Edition">
+                </div>
+                <div class="edition-details">
+                    <h3>Education Edition</h3>
+                    <p>Built for classrooms, Minecraft: Education Edition helps educators teach subjects in an immersive way.</p>
+                    <div class="edition-price">$5 per user/year</div>
+                    <a href="#" class="edition-btn">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="features">
+        <div class="section-header">
+            <h2>Key Features</h2>
+            <p>Discover what makes Minecraft the ultimate sandbox experience</p>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-item">
+                <div class="feature-icon">🏗️</div>
+                <h3>Unlimited Creativity</h3>
+                <p>Build anything you can imagine with the variety of blocks and materials available in the game.</p>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-icon">🌍</div>
+                <h3>Infinite Worlds</h3>
+                <p>Explore procedurally generated worlds with unique biomes, creatures, and landscapes.</p>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-icon">👥</div>
+                <h3>Multiplayer</h3>
+                <p>Play with friends and others in the same world, collaborating on builds or competing.</p>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-icon">🛠️</div>
+                <h3>Survival Mode</h3>
+                <p>Gather resources, craft tools, and survive against hostile mobs in challenging environments.</p>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-icon">🎮</div>
+                <h3>Cross-Platform Play</h3>
+                <p>Play with friends across different devices with Bedrock Edition's cross-platform capabilities.</p>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-icon">🔧</div>
+                <h3>Mods & Add-ons</h3>
+                <p>Customize your experience with community-created modifications and official add-ons.</p>
+            </div>
+        </div>
+    </section>
+    
+    <section class="dirt-bg">
+        <div class="minecraft-container">
+            <img src="/api/placeholder/400/100" alt="Minecraft Logo" class="minecraft-logo">
+            <p class="minecraft-text">Join more than 140 million players worldwide and become part of the Minecraft universe. Build, explore, and create with your friends or embark on a solo adventure!</p>
+            <a href="#" class="minecraft-btn">Start Your Adventure</a>
+        </div>
+    </section>
+    
+    <section class="community">
+        <div class="community-content">
+            <div class="community-text">
+                <h2>Join Our Community</h2>
+                <p>Connect with millions of Minecraft players around the world. Share your creations, join public servers, participate in events, and be part of one of gaming's most passionate communities.</p>
+                <p>From massive multiplayer servers to creative build showcases, the Minecraft community is always creating amazing new experiences to explore.</p>
+                <a href="#" class="edition-btn">Join Now</a>
+            </div>
+            <div class="community-image">
+                <img src="/api/placeholder/600/400" alt="Minecraft Community">
+            </div>
+        </div>
+    </section>
+    
+    <section class="gameplay">
+        <div class="section-header">
+            <h2>Gameplay Modes</h2>
+            <p>Choose how you want to play Minecraft</p>
+        </div>
+        
+        <div class="edition-cards">
+            <div class="edition-card">
+                <div class="edition-image">
+                    <img src="/api/placeholder/400/300" alt="Survival Mode">
+                </div>
+                <div class="edition-details">
+                    <h3>Survival Mode</h3>
+                    <p>Gather resources, craft tools and weapons, build shelter, and survive against hostile mobs. Hunger and health management add to the challenge.</p>
+                    <a href="#" class="edition-btn">Learn More</a>
+                </div>
+            </div>
+            
+            <div class="edition-card">
+                <div class="edition-image">
+                    <img src="/api/placeholder/400/300" alt="Creative Mode">
+                </div>
+                <div class="edition-details">
+                    <h3>Creative Mode</h3>
+                    <p>Access unlimited resources, fly freely, and build without limitations. Perfect for architectural projects and artistic expression.</p>
+                    <a href="#" class="edition-btn">Learn More</a>
+                </div>
+            </div>
+            
+            <div class="edition-card">
+                <div class="edition-image">
+                    <img src="/api/placeholder/400/300" alt="Adventure Mode">
+                </div>
+                <div class="edition-details">
+                    <h3>Adventure Mode</h3>
+                    <p>Play custom maps created by the community with specific rules and limitations for unique gameplay experiences.</p>
+                    <a href="#" class="edition-btn">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="news">
+        <div class="section-header">
+            <h2>Latest News</h2>
+            <p>Stay up to date with the latest developments in the world of Minecraft</p>
+        </div>
+        
+        <div class="news-grid">
+            <div class="news-card">
+                <div class="news-image">
+                    <img src="/api/placeholder/400/240" alt="Minecraft Update">
+                </div>
+                <div class="news-content">
+                    <span class="news-date">March 10, 2025</span>
+                    <h3>Minecraft 1.20.5 Update Released</h3>
+                    <p>The latest update brings new biomes, mobs, and building blocks to enhance your Minecraft experience.</p>
+                    <a href="#" class="read-more">Read More <span>→</span></a>
+                </div>
+            </div>
+            
+            <div class="news-card">
+                <div class="news-image">
+                    <img src="/api/placeholder/400/240" alt="Minecraft Event">
+                </div>
+                <div class="news-content">
+                    <span class="news-date">March 5, 2025</span>
+                    <h3>MineCon 2025 Dates Announced</h3>
+                    <p>Mark your calendars for the biggest Minecraft event of the year, featuring new announcements and community activities.</p>
+                    <a href="#" class="read-more">Read More <span>→</span></a>
+                </div>
+            </div>
+            
+            <div class="news-card">
+                <div class="news-image">
+                    <img src="/api/placeholder/400/240" alt="Minecraft Community">
+                </div>
+                <div class="news-content">
+                    <span class="news-date">February 28, 2025</span>
+                    <h3>Community Spotlight: Amazing Redstone Creations</h3>
+                    <p>Check out these incredible redstone contraptions built by talented members of the Minecraft community.</p>
+                    <a href="#" class="read-more">Read More <span>→</span></a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="cta">
+        <div class="cta-content">
+            <h2>Ready to Start Your Minecraft Journey?</h2>
+            <p>Join millions of players around the world and unleash your creativity in the infinite worlds of Minecraft.</p>
+            <a href="#" class="cta-btn">Get Minecraft Now</a>
+        </div>
